@@ -11,22 +11,32 @@ browser.contextMenus.create({
   contexts: ['selection']
 });
 
+browser.contextMenus.create({
+  id: 'navigateToFragment',
+  title: 'Navigate to fragment',
+  contexts: ['selection']
+});
+
 browser.contextMenus.onClicked.addListener(async (info, tab) => {
-  if (info.menuItemId != 'copyFragmentUrl' && info.menuItemId != 'copyFragmentPath') {
+  if (info.menuItemId != 'copyFragmentUrl' && info.menuItemId != 'copyFragmentPath' && info.menuItemId != 'navigateToFragment') {
     return;
   }
 
-  let [prefix, selectedText, suffix] = await browser.tabs.sendMessage(tab.id, 'getTextFragment');
+  let [prefix, selectedText, suffix] = await browser.tabs.sendMessage(tab.id, { action: 'getTextFragment' });
 
   prefix = processAffix(prefix, 'prefix');
   suffix = processAffix(suffix, 'suffix');
 
-  const result = urlOrPath(info, tab, prefix, selectedText, suffix)
+  const result = pointer(info, tab, prefix, selectedText, suffix)
 
-  copyToClipboard(result);
+  if (info.menuItemId === 'copyFragmentUrl' || info.menuItemId === 'copyFragmentPath') {
+    copyToClipboard(result);
+  } else if (info.menuItemId === 'navigateToFragment') {
+    browser.tabs.sendMessage(tab.id, { action: 'navigateToFragment', fragment: result });
+  }
 });
 
-function urlOrPath(info, tab, prefix, selectedText, suffix) {
+function pointer(info, tab, prefix, selectedText, suffix) {
   if (prefix) {
     prefix = encodeURIComponent(prefix) + '-,';
   }
@@ -45,6 +55,8 @@ function urlOrPath(info, tab, prefix, selectedText, suffix) {
     const path = (new URL(tab.url)).pathname;
 
     return path + fragment;
+  } else if (info.menuItemId === 'navigateToFragment') {
+    return fragment;
   }
 }
 

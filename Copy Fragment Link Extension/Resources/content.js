@@ -1,5 +1,5 @@
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message === 'getTextFragment') {
+  if (message.action === 'getTextFragment') {
     let selection = window.getSelection();
     let selectedText = selection.toString();
 
@@ -22,6 +22,8 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     // Clear selection
     window.getSelection().empty();
+  } else if (message.action === 'navigateToFragment') {
+    location.hash = message.fragment;
   }
 
   return true; // Ensures the response is asynchronous
