@@ -11,25 +11,33 @@ browser.contextMenus.create({
   contexts: ['selection']
 });
 
-// Handle the click event for the context menu
-browser.contextMenus.onClicked.addListener((info, tab) => {
+browser.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId != 'copyFragmentUrl' && info.menuItemId != 'copyFragmentPath') {
     return;
   }
 
-  const selectedText = info.selectionText;
+  let [prefix, selectedText, suffix] = await browser.tabs.sendMessage(tab.id, 'getTextFragment');
 
-  if (!selectedText) {
-    return;
-  }
+  prefix = processAffix(prefix, 'prefix');
+  suffix = processAffix(suffix, 'suffix');
 
-  const encodedText = encodeURIComponent(selectedText);
+  const result = urlOrPath(info, tab, prefix, selectedText, suffix)
 
-  copyToClipboard(urlOrPath(info, tab, encodedText));
+  copyToClipboard(result);
 });
 
-function urlOrPath(info, tab, encodedText) {
-  let fragment = `#:~:text=${encodedText}`;
+function urlOrPath(info, tab, prefix, selectedText, suffix) {
+  if (prefix) {
+    prefix = encodeURIComponent(prefix) + '-,';
+  }
+
+  selectedText = encodeURIComponent(selectedText);
+
+  if (suffix) {
+    suffix = ',-' + encodeURIComponent(suffix);
+  }
+
+  let fragment = `#:~:text=${prefix}${selectedText}${suffix}`;
 
   if (info.menuItemId === 'copyFragmentUrl') {
     return tab.url.split('#')[0] + fragment;
@@ -38,6 +46,23 @@ function urlOrPath(info, tab, encodedText) {
 
     return path + fragment;
   }
+}
+
+function processAffix(affix, type) {
+  affix = affix.trim();
+
+  let result;
+
+  if (type === 'prefix') {
+    // Keep only the last four words
+    result = affix.match(/(\S+\s*){4}$/);
+  } else if (type === 'suffix') {
+
+    // Keep only the first four words
+    result = affix.match(/^(\S+\s*){4}/);
+  }
+
+  return result ? result[0].trim() : '';
 }
 
 function copyToClipboard(text) {
