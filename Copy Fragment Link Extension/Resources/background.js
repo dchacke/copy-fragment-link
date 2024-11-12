@@ -27,10 +27,13 @@ browser.contextMenus.onClicked.addListener(async (info, tab) => {
     return;
   }
 
-  let [prefix, selectedText, suffix] = await browser.tabs.sendMessage(
+  let [leftText, selectedText, wholeParagraph] = await browser.tabs.sendMessage(
     tab.id,
     { action: 'getTextFragment' }
   );
+
+  let prefix = leftText.substr(0, leftText.length - selectedText.length);
+  let suffix = wholeParagraph.substr(leftText.length, wholeParagraph.length);
 
   prefix = processAffix(prefix, 'prefix');
   suffix = processAffix(suffix, 'suffix');
