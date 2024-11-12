@@ -5,15 +5,13 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     selection.modify('move', 'backward', 'character');
 
-    // Jump up high enough we select some text somewhere
-    selection.modify('extend', 'left', 'paragraph');
-
-    // Make sure no cut-off word at the beginning (that would break the prefix)
-    selection.modify('extend', 'left', 'paragraphboundary');
+    for (i = 0; i < 4; i++) {
+      selection.modify('extend', 'left', 'word');
+    }
 
     // At this point, all text to the left of the original selection
     // is selected.
-    let prefix = selection.toString();
+    let prefix = selection.toString().trim();
 
     // Once to jump toward the beginning of the selected text,
     // and then length times to jump to the end of it.
@@ -23,14 +21,12 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
       selection.modify('move', 'forward', 'character');
     }
 
-    // Jump down low enough we select some text somewhere
-    selection.modify('extend', 'right', 'paragraph');
-
-    // Make sure no cut-off word at the end (that would break the suffix)
-    selection.modify('extend', 'right', 'paragraphboundary');
+    for (i = 0; i < 4; i++) {
+      selection.modify('extend', 'right', 'word');
+    }
 
     // At this point, the entire paragraph is selected.
-    let suffix = selection.toString();
+    let suffix = selection.toString().trim();
 
     sendResponse([prefix, selectedText, suffix]);
 

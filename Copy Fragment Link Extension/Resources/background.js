@@ -32,9 +32,6 @@ browser.contextMenus.onClicked.addListener(async (info, tab) => {
     { action: 'getTextFragment' }
   );
 
-  prefix = processAffix(prefix, 'prefix');
-  suffix = processAffix(suffix, 'suffix');
-
   const result = pointer(info, tab, prefix, selectedText, suffix)
 
   if (
@@ -75,23 +72,6 @@ function pointer(info, tab, prefix, selectedText, suffix) {
   } else if (info.menuItemId === 'navigateToFragment') {
     return fragment;
   }
-}
-
-function processAffix(affix, type) {
-  affix = affix.trim();
-
-  let result;
-
-  if (type === 'prefix') {
-    // Keep only the last four words
-    result = affix.match(/(\S+\s*){4}$/);
-  } else if (type === 'suffix') {
-
-    // Keep only the first four words
-    result = affix.match(/^(\S+\s*){4}/);
-  }
-
-  return result ? result[0].trim() : '';
 }
 
 function copyToClipboard(text) {
