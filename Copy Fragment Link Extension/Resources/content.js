@@ -4,7 +4,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     let selectedText = selection.toString();
 
     // Construct prefix based on preceding text in paragraph
-    selection.modify('extend', 'left', 'paragraphboundary');
+    selection.modify('extend', 'left', 'paragraph');
 
     // At this point, all text to the left of the original selection
     // is selected.
@@ -12,7 +12,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     let prefix = leftText.substr(0, leftText.length - selectedText.length);
 
     // Construct suffix based on rest of text in paragraph
-    selection.modify('extend', 'right', 'paragraphboundary');
+    selection.modify('extend', 'right', 'paragraph');
 
     // At this point, the entire paragraph is selected.
     let wholeParagraph = window.getSelection().toString();
