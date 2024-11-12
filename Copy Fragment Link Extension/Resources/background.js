@@ -2,19 +2,19 @@
 browser.contextMenus.create({
   id: 'copyFragmentUrl',
   title: 'Copy fragment URL',
-  contexts: ['selection'] // Only show when there's selected text
+  contexts: ['selection', 'link'] // Only show when there's selected text or selected links
 });
 
 browser.contextMenus.create({
   id: 'copyFragmentPath',
   title: 'Copy fragment path',
-  contexts: ['selection']
+  contexts: ['selection', 'link']
 });
 
 browser.contextMenus.create({
   id: 'navigateToFragment',
   title: 'Navigate to fragment',
-  contexts: ['selection']
+  contexts: ['selection', 'link']
 });
 
 browser.contextMenus.onClicked.addListener(async (info, tab) => {
