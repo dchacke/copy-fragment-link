@@ -2,7 +2,8 @@
 browser.contextMenus.create({
   id: 'copyFragmentUrl',
   title: 'Copy fragment URL',
-  contexts: ['selection', 'link'] // Only show when there's selected text or selected links
+  // Only show when there's selected text or selected links
+  contexts: ['selection', 'link']
 });
 
 browser.contextMenus.create({
@@ -18,21 +19,37 @@ browser.contextMenus.create({
 });
 
 browser.contextMenus.onClicked.addListener(async (info, tab) => {
-  if (info.menuItemId != 'copyFragmentUrl' && info.menuItemId != 'copyFragmentPath' && info.menuItemId != 'navigateToFragment') {
+  if (
+    info.menuItemId != 'copyFragmentUrl' &&
+    info.menuItemId != 'copyFragmentPath' &&
+    info.menuItemId != 'navigateToFragment'
+  ) {
     return;
   }
 
-  let [prefix, selectedText, suffix] = await browser.tabs.sendMessage(tab.id, { action: 'getTextFragment' });
+  let [prefix, selectedText, suffix] = await browser.tabs.sendMessage(
+    tab.id,
+    { action: 'getTextFragment' }
+  );
 
   prefix = processAffix(prefix, 'prefix');
   suffix = processAffix(suffix, 'suffix');
 
   const result = pointer(info, tab, prefix, selectedText, suffix)
 
-  if (info.menuItemId === 'copyFragmentUrl' || info.menuItemId === 'copyFragmentPath') {
+  if (
+    info.menuItemId === 'copyFragmentUrl' ||
+    info.menuItemId === 'copyFragmentPath'
+  ) {
     copyToClipboard(result);
   } else if (info.menuItemId === 'navigateToFragment') {
-    browser.tabs.sendMessage(tab.id, { action: 'navigateToFragment', fragment: result });
+    browser.tabs.sendMessage(
+      tab.id,
+      {
+        action: 'navigateToFragment',
+        fragment: result
+      }
+    );
   }
 });
 
