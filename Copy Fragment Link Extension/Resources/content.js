@@ -2,6 +2,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'getTextFragment') {
     let selection = window.getSelection();
     let selectedText = selection.toString();
+    let range = selection.getRangeAt(0).cloneRange();
 
     selection.modify('move', 'backward', 'character');
 
@@ -17,13 +18,10 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
     }
 
-    // Once to jump toward the beginning of the selected text,
-    // and then length times to jump to the end of it.
-    let iterations = selectedText.length + 1;
-
-    for (let i = 0; i < iterations; i++) {
-      selection.modify('move', 'forward', 'character');
-    }
+    // Move to the end of the original selection again
+    selection.removeAllRanges();
+    selection.addRange(range);
+    selection.modify('move', 'forward', 'character');
 
     let suffix = '';
 
@@ -77,7 +75,6 @@ function selectedElements(selection) {
 
   return elements;
 }
-
 
 function anyIllegalElements(selection) {
   return selectedElements(selection).some(el => {
