@@ -80,6 +80,7 @@ function anyIllegalElements(selection) {
   return selectedElements(selection).some(el => {
     return window.getComputedStyle(el).getPropertyValue('-webkit-user-select') === 'none' ||
       window.getComputedStyle(el).getPropertyValue('user-select') === 'none' ||
-      el.tagName === 'IFRAME';
+      el.tagName === 'IFRAME' ||
+      el.tagName === 'IMG';
   });
 }
