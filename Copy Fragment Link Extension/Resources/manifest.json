@@ -25,10 +25,6 @@
     "matches": [ "<all_urls>" ]
   }],
 
-  "action": {
-    "default_icon": "images/toolbar-icon.svg"
-  },
-
   "permissions": ["contextMenus", "activeTab", "clipboardWrite"],
   "host_permissions": [
     "http://*/*",
