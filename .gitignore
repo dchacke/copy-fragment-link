@@ -1,0 +1,4 @@
+# Per rob mayoff, https://stackoverflow.com/a/9028841
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
