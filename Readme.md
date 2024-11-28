@@ -2,7 +2,7 @@
 
 The *Link to Text Fragment* Extension for Safari is broken so I decided to make my own.
 
-As a bonus, I’m including two new features: copying the *path* to the fragment, and *navigating* to the fragment.
+As a bonus, I’m including two new features: copying the *path* to a fragment (eg `/path/to#:~:text=fragment`), and *navigating* to a fragment.
 
 ## Usage
 
