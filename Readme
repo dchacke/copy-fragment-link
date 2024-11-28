@@ -1,0 +1,26 @@
+# Copy Fragment Link
+
+The *Link to Text Fragment* Extension for Safari is broken so I decided to make my own.
+
+As a bonus, I’m including two new features: copying the *path* to the fragment, and *navigating* to the fragment.
+
+## Usage
+
+Highlight some text, right click on it, then select one of three options:
+
+![Context menu](context-menu.jpg)
+
+## Installation
+
+1. Allow unsigned extensions to run in Safari.
+2. Git clone.
+3. Build and run using Xcode.
+4. Make sure that Copy Fragment Link is enabled in the list of Safari extensions.
+
+## Limitations
+
+Fragment links work on *most* sites but not all. Some elements (eg iframes) interfere with fragments. In addition, text fragments can break navigation in single-page apps. The extension uses heuristics to disambiguate and highlight the specified text but may instead highlight repeat text on the same page. Use with caution.
+
+## License
+
+Adjusted MIT.
