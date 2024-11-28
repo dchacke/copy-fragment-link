@@ -1,10 +1,10 @@
 # Copy Fragment Link
 
+Fragment links direct people to specific passages on a page. While Safari currently understands such links and highlights the corresponding text, it does not offer a built-in way to *generate* such links. That’s where this extension comes in.
+
 The *Link to Text Fragment* Extension for Safari is broken so I decided to make my own.
 
-As a bonus, I’m including two new features: copying the *path* to a fragment (eg `/path/to#:~:text=fragment`), and *navigating* to a fragment.
-
-Fragment links direct people to specific passages on a page.
+As a bonus, I’m including two new features: copying the *path* to a fragment (eg `/path/to#:~:text=fragment`) and *navigating* to a fragment.
 
 ## Usage
 
