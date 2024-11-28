@@ -23,4 +23,4 @@ Fragment links work on *most* sites but not all. Some elements (eg iframes) inte
 
 ## License
 
-Adjusted MIT.
+[Adjusted MIT.](License)
