@@ -1,5 +1,7 @@
 # Copy Fragment Link
 
+![Logo](logo.png)
+
 Fragment links direct people to specific passages on a page. While Safari currently understands such links and highlights the corresponding text, it does not offer a built-in way to *generate* such links. That’s where this extension comes in.
 
 The *Link to Text Fragment* Extension for Safari is broken so I decided to make my own.
